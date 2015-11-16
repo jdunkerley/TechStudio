@@ -5,7 +5,6 @@
         "moduleResolution": "node",
         "isolatedModules": false,
         "jsx": "react",
-        "emitDecoratorMetadata": true,
         "declaration": true,
         "noImplicitAny": true,
         "removeComments": true,

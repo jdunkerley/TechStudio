@@ -49,11 +49,13 @@ gulp.task('lint', () => {
         .pipe(tslint.report('verbose'));
 });
 
-gulp.task('clean', () => { return del([files.app.js, paths.dest + '**/*']); });
+gulp.task('clean', () => {
+    return del([files.app.js, paths.dest + '**/*', files.test.js]);
+});
 
-gulp.task('cleanTests', () => { return del([files.test.js]); });
-
-gulp.task('buildTests', ['lint', 'cleanTests'], () => {
+// Because the tests are transpiling src on the fly cleaning the transpiled src
+// is safe.
+gulp.task('build:tests', ['lint', 'clean'], () => {
     let tsProject = createProject();
 
     return gulp.src(files.test.specs.ts)
@@ -63,12 +65,14 @@ gulp.task('buildTests', ['lint', 'cleanTests'], () => {
         .pipe(gulp.dest(paths.tests.js));
 });
 
-gulp.task('test', ['buildTests'], () => {
+// The tests are transpiling the src ts files on the fly, so there is no
+// dependency for building the source yet.
+gulp.task('test', ['build:tests'], () => {
     return gulp.src(files.test.specs.js)
         .pipe(jsmine());
 });
 
-gulp.task('build', ['lint', 'clean'], () => {
+gulp.task('build:src', ['lint', 'clean'], () => {
     let tsProject = createProject();
 
     return gulp.src(files.app.ts)
@@ -78,19 +82,21 @@ gulp.task('build', ['lint', 'clean'], () => {
         .pipe(gulp.dest(paths.src.js));
 });
 
-gulp.task('concat', ['test', 'build'], () => {
+gulp.task('build', ['build:tests', 'build:src']);
+
+gulp.task('concat', ['build', 'test'], () => {
     return gulp.src(files.app.js)
         .pipe(concat(files.releaseName))
         .pipe(gulp.dest(paths.dest));
 });
 
-gulp.task('uglify', ['concat'], () =>
+gulp.task('min', ['concat'], () =>
     gulp.src(paths.dest + files.releaseName)
         .pipe(rename({ extname: '.min.js' }))
         .pipe(uglify())
         .pipe(gulp.dest(paths.dest)));
 
-gulp.task('watch', () =>
-    gulp.watch([files.app.ts, files.test.specs.ts, files.gulp], ['lint', 'test', 'build']));
-
-gulp.task('default', ['lint', 'test', 'build']);
+gulp.task('default', () =>
+    gulp.watch(
+        [files.app.ts, files.test.specs.ts, files.gulp],
+        ['lint', 'build', 'test']));
