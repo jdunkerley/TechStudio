@@ -1,0 +1,7 @@
+.idea
+node_modules
+dist
+tmp
+src/js/**/*.*
+tests/js/**/*.*
+gulp-file.j*
