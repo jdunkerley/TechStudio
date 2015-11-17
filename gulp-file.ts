@@ -96,7 +96,9 @@ gulp.task('min', ['concat'], () =>
         .pipe(uglify())
         .pipe(gulp.dest(paths.dest)));
 
-gulp.task('default', () =>
+gulp.task('watch', () =>
     gulp.watch(
         [files.app.ts, files.test.specs.ts, files.gulp],
         ['lint', 'build', 'test']));
+
+gulp.task('default', ['watch']);
