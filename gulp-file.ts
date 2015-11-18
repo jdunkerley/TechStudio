@@ -1,20 +1,28 @@
 /// <reference path='typings/node/node.d.ts' />
 
-let gulp = require('gulp');
-let ts = require('gulp-typescript');
-let sourcemaps = require('gulp-sourcemaps');
+let gulp = require('gulp'),
+    ts = require('gulp-typescript'),
+    sourcemaps = require('gulp-sourcemaps');
 
-let createProject = () => ts.createProject('tsconfig.json');
+let build = (src: string, dest: string) => gulp.src(src)
+    .pipe(sourcemaps.init())
+    .pipe(ts(ts.createProject('tsconfig.json')))
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest(dest));
+
+let srcDir = './src/',
+    testsDir = './tests/',
+    wildcard = '**/*';
 
 let paths = {
     src: {
-        ts: './src/ts/',
-        js: './src/js/',
+        ts: srcDir +  'ts/',
+        js: srcDir + 'js/',
         dist: './dist/'
     },
     tests: {
-        ts: './tests/ts/',
-        js: './tests/js/'
+        ts: testsDir + 'ts/',
+        js: testsDir + 'js/'
     },
     site: {
         src: './appsrc/',
@@ -24,21 +32,21 @@ let paths = {
 
 let files = {
     src: {
-        ts: paths.src.ts + '**/*.ts',
-        js: paths.src.js + '**/*.js',
-        maps: paths.src.js + '**/*.js.map'
+        ts: paths.src.ts + wildcard + '.ts',
+        js: paths.src.js + wildcard + '.js',
+        maps: paths.src.js + wildcard + '.js.map'
     },
     tests: {
         specs: {
-            ts: paths.tests.ts + '**/*[Ss]pec.ts',
-            js: paths.tests.js + '**/*[Ss]pec.js'
+            ts: paths.tests.ts + wildcard + '[Ss]pec.ts',
+            js: paths.tests.js + wildcard + '[Ss]pec.js'
         },
-        ts: paths.tests.ts + '**/*.ts',
-        js: paths.tests.js + '**/*.js',
-        maps: paths.tests.js + '**/*.js.map'
+        ts: paths.tests.ts + wildcard + '.ts',
+        js: paths.tests.js + wildcard + '.js',
+        maps: paths.tests.js + wildcard + '.js.map'
     },
     site: {
-        html: paths.site.src + '**/*.html'
+        html: paths.site.src + wildcard + '.html'
     },
     releaseName: 'techstudio.js',
     gulp: 'gulp-file.ts'
@@ -48,7 +56,7 @@ gulp.task('lint', () => {
     let tslint = require('gulp-tslint');
 
     return gulp.src([files.src.ts, files.tests.ts, files.gulp])
-        .pipe(tslint())
+        .pipe(tslint({}))
         .pipe(tslint.report('verbose'));
 });
 
@@ -57,25 +65,17 @@ gulp.task('clean', () => {
 
     let src = [files.src.js, files.src.maps],
         tests = [files.tests.js, files.tests.maps],
-        dist = [paths.src.dist + '**/*', paths.site.app + '**/*'];
+        dist = [paths.src.dist + wildcard, paths.site.app + wildcard];
 
     return del(src.concat(tests).concat(dist));
 });
 
-// Because the tests are transpiling src on the fly cleaning the transpiled src
-// is safe.
+// Because the tests are transpiling src on the fly cleaning the transpiled src is safe.
 gulp.task('build:tests', ['lint', 'clean'], () => {
-    let tsProject = createProject();
-
-    return gulp.src(files.tests.specs.ts)
-        .pipe(sourcemaps.init())
-        .pipe(ts(tsProject))
-        .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest(paths.tests.js));
+    return build(files.tests.specs.ts, paths.tests.js);
 });
 
-// The tests are transpiling the src ts files on the fly, so there is no
-// dependency for building the source yet.
+// The tests are transpiling the src ts files on the fly, so there is no dependency for building the source yet.
 gulp.task('test', ['build:tests'], () => {
     let jasmine = require('gulp-jasmine');
 
@@ -84,13 +84,7 @@ gulp.task('test', ['build:tests'], () => {
 });
 
 gulp.task('build:src', ['lint', 'clean'], () => {
-    let tsProject = createProject();
-
-    return gulp.src(files.src.ts)
-        .pipe(sourcemaps.init())
-        .pipe(ts(tsProject))
-        .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest(paths.src.js));
+    return build(files.src.ts, paths.src.js);
 });
 
 gulp.task('build', ['build:tests', 'build:src']);
@@ -118,7 +112,7 @@ gulp.task('min', ['concat'], () => {
 // This task copies the HTML and library js into a dist folder.
 // TODO: update to build and min the site js.
 gulp.task('app:build', ['min'], () => {
-    return gulp.src([files.site.html, paths.src.dist + '**/*'])
+    return gulp.src([files.site.html, paths.src.dist + wildcard])
         .pipe(gulp.dest(paths.site.app));
 });
 
