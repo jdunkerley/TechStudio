@@ -1,6 +1,7 @@
 .idea
 node_modules/
 dist/
+app/
 tmp/
 src/js/**/*.*
 tests/js/**/*.*

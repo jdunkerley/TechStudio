@@ -15,6 +15,10 @@ let paths = {
     tests: {
         ts: './tests/ts/',
         js: './tests/js/'
+    },
+    site: {
+        src: './appsrc/',
+        app: './app/'
     }
 };
 
@@ -33,6 +37,9 @@ let files = {
         js: paths.tests.js + '**/*.js',
         maps: paths.tests.js + '**/*.js.map'
     },
+    site: {
+        html: paths.site.src + '**/*.html'
+    },
     releaseName: 'techstudio.js',
     gulp: 'gulp-file.ts'
 };
@@ -50,7 +57,7 @@ gulp.task('clean', () => {
 
     let src = [files.src.js, files.src.maps],
         tests = [files.tests.js, files.tests.maps],
-        dist = [paths.src.dist + '**/*'];
+        dist = [paths.src.dist + '**/*', paths.site.app + '**/*'];
 
     return del(src.concat(tests).concat(dist));
 });
@@ -106,6 +113,21 @@ gulp.task('min', ['concat'], () => {
         .pipe(uglify())
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest(paths.src.dist));
+});
+
+// This task copies the HTML and library js into a dist folder.
+// TODO: update to build and min the site js.
+gulp.task('app:build', ['min'], () => {
+    return gulp.src([files.site.html, paths.src.dist + '**/*'])
+        .pipe(gulp.dest(paths.site.app));
+});
+
+gulp.task('app:serve', ['app:build'], () => {
+    let gls = require('gulp-live-server');
+
+    let portNumber = 8080;
+    let server = gls.static(paths.site.app, portNumber);
+    server.start();
 });
 
 gulp.task('watch', () =>
