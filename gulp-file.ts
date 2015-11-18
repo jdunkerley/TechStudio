@@ -16,7 +16,7 @@ let srcDir = './src/',
 
 let paths = {
     src: {
-        ts: srcDir +  'ts/',
+        ts: srcDir + 'ts/',
         js: srcDir + 'js/',
         dist: './dist/'
     },
@@ -53,13 +53,13 @@ let files = {
     gulp: 'gulp-file.ts'
 };
 
-let createServer = () => {
-    let gls = require('gulp-live-server');
+let startServer = () => {
+    let gls = require('gulp-live-server'),
+        portNumber = 8080,
+        server = gls.static(paths.site.app, portNumber);
 
-    let portNumber = 8080;
-    return gls.static(paths.site.app, portNumber);
+    server.start();
 };
-
 
 gulp.task('lint', () => {
     let tslint = require('gulp-tslint');
@@ -70,9 +70,8 @@ gulp.task('lint', () => {
 });
 
 gulp.task('clean', () => {
-    let del = require('del');
-
-    let src = [files.src.js, files.src.maps],
+    let del = require('del'),
+        src = [files.src.js, files.src.maps],
         tests = [files.tests.js, files.tests.maps],
         dist = [paths.src.dist + wildcard, paths.site.app + wildcard];
 
@@ -119,8 +118,8 @@ gulp.task('concat', ['build', 'test'], () => {
 });
 
 gulp.task('min', ['concat'], () => {
-    let rename = require('gulp-rename');
-    let uglify = require('gulp-uglify');
+    let rename = require('gulp-rename'),
+        uglify = require('gulp-uglify');
 
     return gulp.src(paths.src.dist + files.releaseName)
         .pipe(rename({ extname: '.min.js' }))
@@ -137,14 +136,21 @@ gulp.task('app:build', ['min'], () => {
 });
 
 gulp.task('app:serve', ['app:build'], () => {
-    createServer().start();
+    startServer();
 });
 
 gulp.task('app:connect', () => {
-    createServer().start();
+    startServer();
 });
 
 gulp.task('watch', () =>
     gulp.watch([files.src.ts, files.tests.specs.ts, files.gulp], ['lint', 'build', 'test']));
 
 gulp.task('default', ['watch']);
+
+gulp.task('tsd', () => {
+    let tsd = require('gulp-tsd');
+
+    return gulp.src('./gulp_tsd.json')
+        .pipe(tsd());
+});
