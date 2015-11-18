@@ -46,11 +46,20 @@ let files = {
         maps: paths.tests.js + wildcard + '.js.map'
     },
     site: {
-        html: paths.site.src + wildcard + '.html'
+        html: paths.site.src + wildcard + '.html',
+        ts: paths.site.src + wildcard + '.ts'
     },
     releaseName: 'techstudio.js',
     gulp: 'gulp-file.ts'
 };
+
+let createServer = () => {
+    let gls = require('gulp-live-server');
+
+    let portNumber = 8080;
+    return gls.static(paths.site.app, portNumber);
+};
+
 
 gulp.task('lint', () => {
     let tslint = require('gulp-tslint');
@@ -87,7 +96,11 @@ gulp.task('build:src', ['lint', 'clean'], () => {
     return build(files.src.ts, paths.src.js);
 });
 
-gulp.task('build', ['build:tests', 'build:src']);
+gulp.task('build:appsrc', ['lint', 'clean'], () => {
+    return build(files.site.ts, paths.site.app);
+});
+
+gulp.task('build', ['build:tests', 'build:src', 'build:appsrc']);
 
 gulp.task('concat', ['build', 'test'], () => {
     let concat = require('gulp-concat');
@@ -109,19 +122,18 @@ gulp.task('min', ['concat'], () => {
         .pipe(gulp.dest(paths.src.dist));
 });
 
-// This task copies the HTML and library js into a dist folder.
-// TODO: update to build and min the site js.
+// This task copies the HTML, angular js and library js into a dist folder.
 gulp.task('app:build', ['min'], () => {
-    return gulp.src([files.site.html, paths.src.dist + wildcard])
+    gulp.src([files.site.html, paths.src.dist + wildcard])
         .pipe(gulp.dest(paths.site.app));
 });
 
 gulp.task('app:serve', ['app:build'], () => {
-    let gls = require('gulp-live-server');
+    createServer().start();
+});
 
-    let portNumber = 8080;
-    let server = gls.static(paths.site.app, portNumber);
-    server.start();
+gulp.task('app:connect', () => {
+    createServer().start();
 });
 
 gulp.task('watch', () =>
