@@ -64,7 +64,7 @@ let startServer = () => {
 gulp.task('lint', () => {
     let tslint = require('gulp-tslint');
 
-    return gulp.src([files.src.ts, files.tests.ts, files.gulp])
+    return gulp.src([files.src.ts, files.tests.ts, files.site.ts, files.gulp])
         .pipe(tslint({}))
         .pipe(tslint.report('verbose'));
 });
