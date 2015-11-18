@@ -147,3 +147,10 @@ gulp.task('watch', () =>
     gulp.watch([files.src.ts, files.tests.specs.ts, files.gulp], ['lint', 'build', 'test']));
 
 gulp.task('default', ['watch']);
+
+gulp.task('tsd', () => {
+    let tsd = require('gulp-tsd');
+
+    return gulp.src('./gulp_tsd.json')
+        .pipe(tsd());
+});
