@@ -31,7 +31,9 @@
     "jasmine-core": "^2.3.4",
     "tslint": "^2.5.1",
     "typescript": "^1.6.2",
-    "typescript-require": "^0.2.9"
+    "typescript-require": "^0.2.9",
+    "bootstrap": "^3.3.5",
+    "gulp-less": "^3.0.5"
   },
   "dependencies": {
     "angular2": "^2.0.0-alpha.46"

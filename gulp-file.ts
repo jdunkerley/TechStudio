@@ -100,7 +100,15 @@ gulp.task('build:appsrc', ['lint', 'clean'], () => {
     return build(files.site.ts, paths.site.app);
 });
 
-gulp.task('build', ['build:tests', 'build:src', 'build:appsrc']);
+// Compiles LESS > CSS
+gulp.task('build:less', () => {
+    let less = require('gulp-less');
+    return gulp.src(paths.site.src + 'styles.less')
+        .pipe(less())
+        .pipe(gulp.dest(paths.site.app + '/css'));
+});
+
+gulp.task('build', ['build:tests', 'build:src', 'build:appsrc', 'build:less']);
 
 gulp.task('concat', ['build', 'test'], () => {
     let concat = require('gulp-concat');
