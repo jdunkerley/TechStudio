@@ -147,3 +147,12 @@ gulp.task('watch', () =>
     gulp.watch([files.src.ts, files.tests.specs.ts, files.gulp], ['lint', 'build', 'test']));
 
 gulp.task('default', ['watch']);
+
+// This task will fetch the most recent typings, and needs to initially be run once, before any other task.
+// Thereafter it only needs to be run to update the existing typings.
+gulp.task('tsd', () => {
+    let tsd = require('gulp-tsd');
+
+    return gulp.src('./gulp_tsd.json')
+        .pipe(tsd());
+});
