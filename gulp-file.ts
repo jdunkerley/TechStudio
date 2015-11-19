@@ -1,8 +1,12 @@
-/// <reference path='typings/node/node.d.ts' />
+import * as gulp from 'gulp';
+import * as ts from 'gulp-typescript';
+import * as tslint from 'gulp-tslint';
+import * as sourcemaps from 'gulp-sourcemaps';
+import * as concat from 'gulp-concat';
+import * as del from 'del';
 
-let gulp = require('gulp'),
-    ts = require('gulp-typescript'),
-    sourcemaps = require('gulp-sourcemaps');
+// Not all modules can be imported with the ES6 syntax, (see https://github.com/Microsoft/TypeScript/issues/3612),
+// so some have been left using the ES5 'require' syntax, inline.
 
 let build = (src: string, dest: string) => gulp.src(src)
     .pipe(sourcemaps.init())
@@ -62,16 +66,13 @@ let startServer = () => {
 };
 
 gulp.task('lint', () => {
-    let tslint = require('gulp-tslint');
-
     return gulp.src([files.src.ts, files.tests.ts, files.site.ts, files.gulp])
         .pipe(tslint({}))
         .pipe(tslint.report('verbose'));
 });
 
 gulp.task('clean', () => {
-    let del = require('del'),
-        src = [files.src.js, files.src.maps],
+    let src = [files.src.js, files.src.maps],
         tests = [files.tests.js, files.tests.maps],
         dist = [paths.src.dist + wildcard, paths.site.app + wildcard];
 
@@ -110,8 +111,6 @@ gulp.task('build:less', () => {
 gulp.task('build', ['build:tests', 'build:src', 'build:appsrc', 'build:less']);
 
 gulp.task('concat', ['build', 'test'], () => {
-    let concat = require('gulp-concat');
-
     return gulp.src(files.src.js)
         .pipe(concat(files.releaseName))
         .pipe(gulp.dest(paths.src.dist));
