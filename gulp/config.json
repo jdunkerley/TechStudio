@@ -1,0 +1,60 @@
+﻿{
+  "root": {
+    "src": "./src",
+    "appsrc": "'./appsrc",
+    "dest": "./dist",
+    "appdest": "./app",
+    "tests": "./tests",
+    "file": "./tsconfig.json",
+    "tsd": "./gulp_tsd.json"
+  },
+
+  "wildcard": "/**/*",
+
+  "tasks": {
+    "buildTests": {
+      "src": "./tests/ts/**/*[Ss]pec",
+      "dest": "./tests/js",
+      "extensions": {
+        "in": "ts",
+        "out": "js"
+      }
+    },
+
+    "less": {
+      "src": "./appsrc",
+      "dest": "./app/css",
+      "extensions": {
+        "in": "less",
+        "out": "css"
+      }
+    },
+
+    "browserifySrc": {
+      "src": "./src",
+      "dest": "./dist",
+      "extensions": {
+        "in": "ts",
+        "out": "js"
+      }
+    },
+
+    "browserifyApp": {
+      "src": "./appsrc",
+      "dest": "./app",
+      "extensions": {
+        "in": "ts",
+        "out": "js"
+      }
+    },
+
+    "appBuild": {
+      "src": "./appsrc",
+      "dest": "./app",
+      "extensions": {
+        "in": "html",
+        "out": "html"
+      }
+    }
+  }
+}

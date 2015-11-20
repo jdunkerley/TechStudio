@@ -46,6 +46,9 @@
     },
     "browserify/browserify.d.ts": {
       "commit": "16134c168d021351acb1673ee9659644fc58c424"
+    },
+    "gulp-load-plugins/gulp-load-plugins.d.ts": {
+      "commit": "16134c168d021351acb1673ee9659644fc58c424"
     }
   }
 }
