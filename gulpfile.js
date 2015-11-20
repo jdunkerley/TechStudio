@@ -1,2 +1,2 @@
 require('typescript-require');
-require('./gulp-file.ts');
+require('./gulp/gulp-file.ts');

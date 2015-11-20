@@ -6,7 +6,7 @@
   "bundle": "typings/tsd.d.ts",
   "installed": {
     "node/node.d.ts": {
-      "commit": "fc341765ebbb04b7109981a25dced01f488f4d94"
+      "commit": "16134c168d021351acb1673ee9659644fc58c424"
     },
     "jasmine/jasmine.d.ts": {
       "commit": "fc341765ebbb04b7109981a25dced01f488f4d94"
@@ -19,6 +19,36 @@
     },
     "q/Q.d.ts": {
       "commit": "fc341765ebbb04b7109981a25dced01f488f4d94"
+    },
+    "gulp-typescript/gulp-typescript.d.ts": {
+      "commit": "fc341765ebbb04b7109981a25dced01f488f4d94"
+    },
+    "gulp-sourcemaps/gulp-sourcemaps.d.ts": {
+      "commit": "fc341765ebbb04b7109981a25dced01f488f4d94"
+    },
+    "minimatch/minimatch.d.ts": {
+      "commit": "fc341765ebbb04b7109981a25dced01f488f4d94"
+    },
+    "glob/glob.d.ts": {
+      "commit": "fc341765ebbb04b7109981a25dced01f488f4d94"
+    },
+    "del/del.d.ts": {
+      "commit": "fc341765ebbb04b7109981a25dced01f488f4d94"
+    },
+    "es6-promise/es6-promise.d.ts": {
+      "commit": "fc341765ebbb04b7109981a25dced01f488f4d94"
+    },
+    "vinyl/vinyl.d.ts": {
+      "commit": "fc341765ebbb04b7109981a25dced01f488f4d94"
+    },
+    "gulp-tslint/gulp-tslint.d.ts": {
+      "commit": "fc341765ebbb04b7109981a25dced01f488f4d94"
+    },
+    "browserify/browserify.d.ts": {
+      "commit": "16134c168d021351acb1673ee9659644fc58c424"
+    },
+    "gulp-load-plugins/gulp-load-plugins.d.ts": {
+      "commit": "16134c168d021351acb1673ee9659644fc58c424"
     }
   }
 }
