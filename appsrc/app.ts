@@ -1,5 +1,6 @@
 ﻿import {bootstrap, Component, CORE_DIRECTIVES} from 'angular2/angular2';
 import {Framework} from './frameworks/framework';
+import {DataService} from './dataService';
 
 @Component({
     selector: 'hello-app',
@@ -11,15 +12,10 @@ export class HelloApp {
     public title: string;
     public frameworks: Framework[];
 
-    constructor() {
+    constructor(dataService: DataService) {
         this.title = 'Frameworks Guide';
-        this.frameworks = [
-            new Framework('AngularJS'),
-            new Framework('Angular 2'),
-            new Framework('React'),
-            new Framework('Knockout')
-        ];
+        this.frameworks = dataService.getItems();
     }
 }
 
-bootstrap(HelloApp);
+bootstrap(HelloApp, [DataService]);

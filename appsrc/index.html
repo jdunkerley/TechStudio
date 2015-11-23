@@ -7,6 +7,19 @@
 </head>
 
 <body>
+
+    <nav class="navbar navbar-default navbar-static-top">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#/">Techstudio</a>
+        </div>
+        <form class="form-inline navbar-form pull-right">
+            <input placeholder="API key">
+            <a href="#" class="btn btn-default" type="submit">
+                Search
+            </a>
+        </form>
+    </nav>
+
     <hello-app>Loading...</hello-app>
 
     <!-- TODO: replace the script sources with local versions -->
@@ -23,7 +36,7 @@
     <script>
         // bootstrap the Angular2 application
         System.import('./techstudio.min').catch(console.log.bind(console));
-        System.import('./app.min').catch(console.log.bind(console));
+        System.import('./app.bundle.min').catch(console.log.bind(console));
     </script>
 </body>
 

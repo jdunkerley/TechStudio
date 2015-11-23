@@ -8,15 +8,17 @@ let config = require('../config');
 export default (gulp: any, plugins: any) => {
     return () => {
         let sourcemaps = plugins.sourcemaps,
-            appConfig = config.tasks.browserifyApp;
+            appConfig = config.tasks.browserifyApp,
+            props = {
+                entries: [path.join(appConfig.src, 'app.ts')]
+            };
 
-        return browserify()
-            .add(path.join(appConfig.src, 'app.ts'))
+        return browserify(props)
             .plugin(tsify)
             .bundle()
-            .pipe(source('app.min.js'))
+            .pipe(source('app.bundle.min.js'))
             .pipe(buffer())
-            .pipe(sourcemaps.init())
+            .pipe(sourcemaps.init({ loadMaps: true }))
             .pipe(plugins.uglify())
             .pipe(sourcemaps.write('./'))
             .pipe(gulp.dest(appConfig.dest));
