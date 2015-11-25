@@ -10,7 +10,7 @@ export default (gulp: any, plugins: any) => {
             if (config.tasks.hasOwnProperty(key)) {
                 let task = config.tasks[key];
                 if (task.src) {
-                    let glob = wildcard + '.{' + task.extensions.in + '}';
+                    let glob = wildcard + '.{ts}';
                     files.push(path.join(task.src, glob));
                 }
             }

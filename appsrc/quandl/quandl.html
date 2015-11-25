@@ -1,0 +1,12 @@
+﻿<h1>{{ title }}</h1>
+
+<ul>
+    <li *ng-for="#datum of quandlData">
+        <strong>Date</strong>: {{ datum.date }}<br />
+        <strong>Open</strong>: {{ datum.open }}<br />
+        <strong>High</strong>: {{ datum.high }}<br />
+        <strong>Low</strong>: {{ datum.low }}<br />
+        <strong>Close</strong>: {{ datum.close }}<br />
+        <strong>Volume</strong>: {{ datum.volume }}<br />
+    </li>
+</ul>

@@ -1,18 +1,26 @@
-﻿import {Framework} from './frameworks/framework';
+﻿import {Injectable} from 'angular2/angular2';
+import {Http} from 'angular2/http';
+import {Quandl} from './quandl/quandl';
 
+@Injectable()
 export class DataService {
-    private items: Framework[];
+    public items: Quandl[] = [];
 
-    constructor() {
-        this.items = [
-            new Framework('AngularJS'),
-            new Framework('Angular 2'),
-            new Framework('React'),
-            new Framework('Knockout')
-        ];
+    constructor(public http: Http) {
     }
 
-    getItems() {
-        return this.items;
-    }
+    public fetch(): void {
+        this.http.get('./quandl/data.json')
+            .map((res: any) => res.json())
+            .subscribe(
+                data => this.process(data),
+                err => console.log(err)
+            );
+    };
+
+    private process(data: any): void {
+        for (let i = 0, length = data.length; i < length; i++) {
+            this.items.push(new Quandl().deserialize(data[i]));
+        }
+    };
 }

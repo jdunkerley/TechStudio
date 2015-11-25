@@ -1,21 +1,23 @@
 ﻿import {bootstrap, Component, CORE_DIRECTIVES} from 'angular2/angular2';
-import {Framework} from './frameworks/framework';
+import {HTTP_PROVIDERS} from 'angular2/http';
+import {IQuandl} from './quandl/IQuandl';
 import {DataService} from './dataService';
 
 @Component({
-    selector: 'hello-app',
-    templateUrl: './frameworks/frameworks.html',
+    selector: 'quandl-data',
+    templateUrl: './quandl/quandl.html',
     directives: [CORE_DIRECTIVES]
 })
 
-export class HelloApp {
+export class TechStudio {
     public title: string;
-    public frameworks: Framework[];
+    public quandlData: IQuandl[];
 
     constructor(dataService: DataService) {
-        this.title = 'Frameworks Guide';
-        this.frameworks = dataService.getItems();
+        this.title = 'Quandl Data';
+        this.quandlData = dataService.items;
+        dataService.fetch();
     }
 }
 
-bootstrap(HelloApp, [DataService]);
+bootstrap(TechStudio, [HTTP_PROVIDERS, DataService]);

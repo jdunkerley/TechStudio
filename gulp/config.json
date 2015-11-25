@@ -52,7 +52,7 @@
       "src": "./appsrc",
       "dest": "./app",
       "extensions": {
-        "in": "html",
+        "in": [ "html", "json" ],
         "out": "html"
       }
     }
