@@ -18,9 +18,7 @@ export class DataService {
             );
     };
 
-    private process(data: any): void {
-        for (let i = 0, length = data.length; i < length; i++) {
-            this.items.push(new Quandl().deserialize(data[i]));
-        }
+    private process(data: Object[]): void {
+        data.map(d => this.items.push(new Quandl().deserialize(d)));
     };
 }

@@ -1,12 +1,17 @@
-﻿<h1>{{ title }}</h1>
+﻿<h1>{{ title }}: {{ quandlData.length }}</h1>
 
-<ul>
-    <li *ng-for="#datum of quandlData">
-        <strong>Date</strong>: {{ datum.date }}<br />
-        <strong>Open</strong>: {{ datum.open }}<br />
-        <strong>High</strong>: {{ datum.high }}<br />
-        <strong>Low</strong>: {{ datum.low }}<br />
-        <strong>Close</strong>: {{ datum.close }}<br />
-        <strong>Volume</strong>: {{ datum.volume }}<br />
-    </li>
-</ul>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-2 col-sm-4" *ng-for="#datum of quandlData">
+            <div class="thumbnail" style="color:black">
+                <div><h4>Date: {{ datum.date | date:'mediumDate' }}</h4></div>
+                <hr />
+                <p>Open: <span class="pull-right">{{ datum.open }}</span></p>
+                <p>High: <span class="pull-right">{{ datum.high }}</span></p>
+                <p>Low: <span class="pull-right">{{ datum.low }}</span></p>
+                <p>Close: <span class="pull-right">{{ datum.close }}</span></p>
+                <p>Volume: <span class="pull-right">{{ datum.volume }}</span></p>
+            </div>
+        </div>
+    </div>
+</div>
