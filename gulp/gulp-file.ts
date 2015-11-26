@@ -26,12 +26,16 @@ gulp.task('build:tests', ['lint', 'clean'], getTask('buildTests'));
 gulp.task('test', ['build:tests'], getTask('test'));
 
 gulp.task('browserify:src', ['lint', 'clean', 'test'], getTask('browserifySrc'));
-gulp.task('browserify:app', ['lint', 'clean'], getTask('browserifyApp'));
+gulp.task('build:app', ['lint', 'clean'], getTask('buildApp'));
 gulp.task('less', getTask('less'));
 
-gulp.task('app:build', ['browserify:app', 'less', 'browserify:src'], getTask('appBuild'));
+gulp.task('_app:build', ['browserify:src', 'less'], getTask('appBuild'));
+gulp.task('app:build', ['_app:build', 'build:app'], getTask('appBuild'));
 gulp.task('app:serve', ['app:build'], startServer);
 gulp.task('app:connect', startServer);
+
+gulp.task('browserify:app', ['lint', 'clean'], getTask('browserifyApp'));
+gulp.task('app:release', ['browserify:app', '_app:build'], getTask('htmlReplace'));
 
 gulp.task('watch', () =>
     gulp.watch([configRoot.src, configRoot.tests, configRoot.appsrc], ['test']));

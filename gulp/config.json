@@ -1,7 +1,7 @@
 ﻿{
   "root": {
     "src": "./src",
-    "appsrc": "'./appsrc",
+    "appsrc": "./appsrc",
     "dest": "./dist",
     "appdest": "./app",
     "tests": "./tests",
